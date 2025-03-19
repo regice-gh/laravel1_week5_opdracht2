@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\HuurautosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,13 +19,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/huurautos', function () {
-    $data = DB::table('huurautos')
-            ->select('automerk', 'autotype', 'autobouwjaar')  
-            ->whereIn('autobouwjaar', [2001, 2003, 2006])  
-            ->orderBy('automerk', 'asc')
-            ->orderBy('autotype', 'asc')
-            ->get();
-    // dd($data);
-    return view('huurautos.index',['data'=>$data]);
-});
+Route::get('/huurautos', [HuurautosController::class, 'index'])->name('index');
+Route::get('/huurautos/create', [HuurautosController::class, 'create'])->name('create');
+Route::post('/huurautos', [HuurautosController::class, 'store'])->name('store');
